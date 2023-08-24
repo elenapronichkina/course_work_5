@@ -1,19 +1,12 @@
 import requests
 import os
-from abc import ABC, abstractmethod
 
-
-class APIKEY(ABC):
-    """абстрактный класс для работы с API сайтов с вакансиями"""
-
-    @abstractmethod
-    def get_vacancies(self):
-        pass
-
-
-class HeadHunterAPI(APIKEY):
-    """класс для работы с API сайта с вакансиями HeadHunter:
-        подключается к API и получает вакансии"""
+def get_hh_data(employer_id):
+    """получает данные с hh.ru по API, принимает номер компании"""
+    pass
+class HeadHunterAPI:
+    """класс для работы с API сайта с заботодателями и их вакансиями HeadHunter:
+        подключается к API и получает данные"""
 
     def __init__(self, word_vacancy):
         self.__word_vacancy = word_vacancy
