@@ -1,16 +1,29 @@
-# This is a sample Python script.
+from src.DBManager import DBManager()
+from src.utils import get_hh_data, create_database, save_data_to_database
+from config import config
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def main():
+    employers_ids = ['1122462', '9498120', '3776', '3529', '78638']
+    """[Skyeng, Yandex, МТС, Сбер, Тинькофф]"""
+
+    params = config()
+    db = DBManager()
+    db.connect
+    # drop_tables
+    # create_tables
+    for employer_id in employers_ids:
+        data = get_hh_data(employer_id)
+        create_database('database_hh', params)
+        save_data_to_database(data, 'database_hh', params)
+
+print(db.get_all_vacancies())
+print(db.get_avg_salary())
+print(db.get_vacancies_with_higher_salary())
+print(db.get_vacancies_with_keyword())
+print(db.get_vacancies_with_keyword())
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    main()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
