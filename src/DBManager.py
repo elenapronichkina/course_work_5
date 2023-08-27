@@ -11,7 +11,7 @@ class DBManager:
             cur.execute("""
         SELECT DISTINCT employer_name FROM employers
         INNER JOIN vacancies USING(employer_id)
-        WHERE order_details.quantity = 10""")
+        """)
 
     def get_all_vacancies(self):
        """получает список всех вакансий с указанием названия компании,
