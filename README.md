@@ -8,4 +8,5 @@
 
 
 ## Запуск прпоекта
-* создать файл config.py (шаблон см в файле config.example.py)
+* создать файл database.ini (шаблон в файле database.ini.example.py)
+* установить зависимости из файла requirements.txt
