@@ -3,7 +3,7 @@ from src.utils import get_hh_data, create_database, save_data_to_database
 from config import config
 
 def main():
-    employers_ids = ['1122462', '9498120', '3776', '3529', '78638']
+    employers_ids = [1122462, 9498120, 3776, 3529, 78638]
     """[Skyeng, Yandex, МТС, Сбер, Тинькофф]"""
 
     params = config()

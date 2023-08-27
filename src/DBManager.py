@@ -1,15 +1,21 @@
 import psycopg2
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
-    pass
+    def __init__(self, employer_id):
+        self.employer_id = employer_id
+        self.conn = psycopg2.conn()
 
     def get_companies_and_vacancies_count(self):
         """получает список всех компаний и количество вакансий у каждой компании."""
-        pass
+        with conn.cursor() as cur:
+            cur.execute("""
+        SELECT DISTINCT employer_name FROM employers
+        INNER JOIN vacancies USING(employer_id)
+        WHERE order_details.quantity = 10""")
 
     def get_all_vacancies(self):
-       """получает список всех вакансий с указанием названия компании, названия вакансии
-            и зарплаты и ссылки на вакансию."""
+       """получает список всех вакансий с указанием названия компании,
+       названия вакансии и зарплаты и ссылки на вакансию."""
         pass
 
     def get_avg_salary(self):
