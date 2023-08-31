@@ -1,13 +1,11 @@
 import params
 import psycopg2
-from config import config
 from src.utils import database_name
 
 conn = psycopg2.connect(dbname=database_name, **params)
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
-    def __init__(self, employer_id):
-        self.employer_id = employer_id
+    def __init__(self):
         self.conn = psycopg2.conn()
 
     def get_companies_and_vacancies_count(self):
@@ -75,8 +73,6 @@ class DBManager:
 
         conn.commit()
         conn.close()
-    def create_tables(self):
-        pass
 
-    def drop_tables(self):
-        pass
+    # def conn_close(self):
+    #     self.conn.close()
