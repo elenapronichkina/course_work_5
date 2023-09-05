@@ -12,14 +12,11 @@ class DBManager:
         """получает список всех компаний и количество вакансий у каждой компании."""
         with conn.cursor() as cur:
             cur.execute("""
-        SELECT DISTINCT employer_name 
-        FROM employers
-        INNER JOIN vacancies USING(employer_id);
-        
-        SELECT COUNT(vacancy_id) 
-        FROM vacancies
-        INNER JOIN employers USING(employer_id)
-        """)
+                SELECT COUNT(vacancy_id),employer_name
+                FROM vacancies
+                INNER JOIN employers USING(employer_id)
+                GROUP BY employers.employer_name
+                """)
         conn.commit()
         conn.close()
 
@@ -28,11 +25,10 @@ class DBManager:
        названия вакансии и зарплаты и ссылки на вакансию."""
        with conn.cursor() as cur:
            cur.execute("""
-                SELECT vacancy_name, salary, vacancy_url, employer_name
+                SELECT employers.employer_name, vacancy_name, salary_from, salary_to, vacancy_url 
                 FROM vacancies
-                INNER JOIN employers(employer_id)
-
-                """)
+                INNER JOIN employers USING(employer_id)
+                    """)
        conn.commit()
        conn.close()
 

@@ -35,17 +35,19 @@ def load_vacancies():
     for _id in employers_ids:
 
         data = requests.get(f'https://api.hh.ru/vacancies?employer_id={_id}&per_page=5').json()
+       # print (data)
+        for item in data["items"]:
 
-        cur.execute("""
-            INSERT INTO vacancies (vacancy_id, vacancy_name, vacancy_url, salary_from, salary_to,employer_id) VALUES
-            (%s, %s, %s, %s, %s, %s);""", (
-            data.get('id'),
-            data.get('name'),
-            data.get('alternate_url'),
-            data.get('salary').get('from'),
-            data.get('salary').get('to'),
-            _id
-        ))
+            cur.execute("""
+                INSERT INTO vacancies (vacancy_id, vacancy_name, vacancy_url, salary_from, salary_to,employer_id) VALUES
+                (%s, %s, %s, %s, %s, %s);""", (
+                item.get('id'),
+                item.get('name'),
+                item.get('alternate_url'),
+                item.get('salary').get('from') if item.get('salary') else 0,
+                item.get('salary').get('to') if item.get('salary') else 0,
+                _id
+                ))
 
     cur.close()
     conn.commit()
