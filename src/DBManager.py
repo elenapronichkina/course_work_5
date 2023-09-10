@@ -1,8 +1,8 @@
 import params
 import psycopg2
-from src.utils import database_name
-
-conn = psycopg2.connect(dbname=database_name, **params)
+#from src.utils import database_name
+conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, host='localhost', port=5432)
+#conn = psycopg2.connect(dbname=database_name, **params)
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
     def __init__(self):
@@ -36,22 +36,22 @@ class DBManager:
         """получает среднюю зарплату по вакансиям."""
         with conn.cursor() as cur:
             cur.execute("""
-                 SELECT AVG(salary)
+                 SELECT vacancy_name, AVG(salary_from+salary_to)
                  FROM vacancies
-                 """)
+                 GROUP BY vacancy_name
+                    """)
         conn.commit()
         conn.close()
 
     def get_vacancies_with_higher_salary(self):
         """получает список всех вакансий, у которых
             зарплата выше средней по всем вакансиям."""
-        word = str(input())
         with conn.cursor() as cur:
-            cur.execute(f"""
-                    SELECT (*)  
+            cur.execute("""
+                    SELECT *
                     FROM vacancies
-                    WHERE salary > AVG(salary)
-                    """)
+                    WHERE salary_from > (SELECT AVG(salary_from+salary_to) FROM vacancies)
+                        """)
 
         conn.commit()
         conn.close()
@@ -59,13 +59,16 @@ class DBManager:
     def get_vacancies_with_keyword(self):
         """получает список всех вакансий, в названии которых
             содержатся переданные в метод слова"""
-        word = str(input())
+        user_word = str(input())
+        word = user_word.casefold()
         with conn.cursor() as cur:
             cur.execute(f"""
-            SELECT (*)  
+            SELECT *  
             FROM vacancies
-            WHERE vacancy_name LIKE '% {word})';
-            """)
+            WHERE vacancy_name LIKE '{word}%' 
+            OR vacancy_name LIKE '%{word}' 
+            OR vacancy_name LIKE '%{word}%'
+                """)
 
         conn.commit()
         conn.close()
