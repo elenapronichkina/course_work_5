@@ -1,7 +1,8 @@
-import params
+import os
 import psycopg2
 #from src.utils import database_name
-conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, host='localhost', port=5432)
+password = os.getenv('PASSWORD_PG')
+conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
 #conn = psycopg2.connect(dbname=database_name, **params)
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""

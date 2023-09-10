@@ -1,11 +1,11 @@
+import os
 import psycopg2
 import requests
-#from env import HOST, USER, PASSWORD, PORT
 
+password = os.getenv('PASSWORD_PG')
 def load_employers():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
-
-    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
     for _id in employers_ids:
@@ -29,7 +29,7 @@ def load_employers():
 def load_vacancies():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
 
-    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
     for _id in employers_ids:
@@ -55,7 +55,7 @@ def load_vacancies():
 def create_tables():
     """Создание таблиц для сохранения данных о работодателях и вакансиях"""
 
-    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
 
     with conn.cursor() as cur:
         cur.execute("""
@@ -85,7 +85,7 @@ def create_tables():
 
 def create_database(database_name):
     """Создание базы данных для сохранения данных о каналах и видео."""
-    conn = psycopg2.connect(dbname='postgres', user='postgres', password=541709, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
     cur.execute(f"CREATE DATABASE {database_name}")
@@ -97,7 +97,7 @@ def create_database(database_name):
 
 def drop_database(database_name):
     """Создание базы данных для сохранения данных о каналах и видео."""
-    conn = psycopg2.connect(dbname='postgres', user='postgres', password=541709, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
     cur.execute(f"DROP DATABASE {database_name}")
