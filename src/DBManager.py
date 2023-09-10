@@ -6,7 +6,7 @@ conn = psycopg2.connect(dbname='database_hh', user='postgres', password=541709, 
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
     def __init__(self):
-        self.conn = psycopg2.conn()
+        self.conn = conn
 
     def get_companies_and_vacancies_count(self):
         """получает список всех компаний и количество вакансий у каждой компании."""
@@ -17,8 +17,9 @@ class DBManager:
                 INNER JOIN employers USING(employer_id)
                 GROUP BY employers.employer_name
                 """)
+            rows = cur.fetchall()
+            print(rows)
         conn.commit()
-        conn.close()
 
     def get_all_vacancies(self):
        """получает список всех вакансий с указанием названия компании,
@@ -29,8 +30,10 @@ class DBManager:
                 FROM vacancies
                 INNER JOIN employers USING(employer_id)
                     """)
+           rows = cur.fetchall()
+           print(rows)
+
        conn.commit()
-       conn.close()
 
     def get_avg_salary(self):
         """получает среднюю зарплату по вакансиям."""
@@ -40,8 +43,10 @@ class DBManager:
                  FROM vacancies
                  GROUP BY vacancy_name
                     """)
+            rows = cur.fetchall()
+            print(rows)
+
         conn.commit()
-        conn.close()
 
     def get_vacancies_with_higher_salary(self):
         """получает список всех вакансий, у которых
@@ -52,9 +57,10 @@ class DBManager:
                     FROM vacancies
                     WHERE salary_from > (SELECT AVG(salary_from+salary_to) FROM vacancies)
                         """)
+            rows = cur.fetchall()
+            print(rows)
 
         conn.commit()
-        conn.close()
 
     def get_vacancies_with_keyword(self):
         """получает список всех вакансий, в названии которых
@@ -69,9 +75,10 @@ class DBManager:
             OR vacancy_name LIKE '%{word}' 
             OR vacancy_name LIKE '%{word}%'
                 """)
+            rows = cur.fetchall()
+            print(rows)
 
         conn.commit()
-        conn.close()
 
-    # def conn_close(self):
-    #     self.conn.close()
+    def conn_close(self):
+        self.conn.close()
