@@ -3,13 +3,14 @@ import psycopg2
 import requests
 
 password = os.getenv('PASSWORD_PG')
+
+
 def load_employers():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
     conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
     for _id in employers_ids:
-
         data = requests.get(f'https://api.hh.ru/employers/{_id}').json()
 
         cur.execute("""
@@ -26,6 +27,7 @@ def load_employers():
     conn.commit()
     conn.close()
 
+
 def load_vacancies():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
 
@@ -35,9 +37,8 @@ def load_vacancies():
     for _id in employers_ids:
 
         data = requests.get(f'https://api.hh.ru/vacancies?employer_id={_id}&per_page=5').json()
-       # print (data)
+        # print (data)
         for item in data["items"]:
-
             cur.execute("""
                 INSERT INTO vacancies (vacancy_id, vacancy_name, vacancy_url, salary_from, salary_to,employer_id) VALUES
                 (%s, %s, %s, %s, %s, %s);""", (
@@ -47,11 +48,13 @@ def load_vacancies():
                 item.get('salary').get('from') if item.get('salary') else 0,
                 item.get('salary').get('to') if item.get('salary') else 0,
                 _id
-                ))
+            ))
 
     cur.close()
     conn.commit()
     conn.close()
+
+
 def create_tables():
     """Создание таблиц для сохранения данных о работодателях и вакансиях"""
 
@@ -83,6 +86,7 @@ def create_tables():
     conn.commit()
     conn.close()
 
+
 def create_database(database_name):
     """Создание базы данных для сохранения данных о каналах и видео."""
     conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
@@ -92,7 +96,6 @@ def create_database(database_name):
 
     cur.close()
     conn.close()
-#create_database('database_hh')
 
 
 def drop_database(database_name):
@@ -104,5 +107,3 @@ def drop_database(database_name):
 
     cur.close()
     conn.close()
-#drop_database('database_hh')
-

@@ -1,11 +1,13 @@
 import os
 import psycopg2
-#from src.utils import database_name
+
 password = os.getenv('PASSWORD_PG')
 conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
-#conn = psycopg2.connect(dbname=database_name, **params)
+
+
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
+
     def __init__(self):
         self.conn = conn
 
@@ -23,18 +25,18 @@ class DBManager:
         conn.commit()
 
     def get_all_vacancies(self):
-       """получает список всех вакансий с указанием названия компании,
-       названия вакансии и зарплаты и ссылки на вакансию."""
-       with conn.cursor() as cur:
-           cur.execute("""
+        """получает список всех вакансий с указанием названия компании,
+        названия вакансии и зарплаты и ссылки на вакансию."""
+        with conn.cursor() as cur:
+            cur.execute("""
                 SELECT employers.employer_name, vacancy_name, salary_from, salary_to, vacancy_url 
                 FROM vacancies
                 INNER JOIN employers USING(employer_id)
                     """)
-           rows = cur.fetchall()
-           print(rows)
+            rows = cur.fetchall()
+            print(rows)
 
-       conn.commit()
+        conn.commit()
 
     def get_avg_salary(self):
         """получает среднюю зарплату по вакансиям."""
