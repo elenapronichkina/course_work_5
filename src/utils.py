@@ -92,6 +92,8 @@ def create_database(database_name):
     conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
+    conn.autocommit = True
+
     cur.execute(f"CREATE DATABASE {database_name}")
 
     cur.close()
@@ -103,7 +105,9 @@ def drop_database(database_name):
     conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
     cur = conn.cursor()
 
-    cur.execute(f"DROP DATABASE {database_name}")
+    conn.autocommit = True
+
+    cur.execute(f"DROP DATABASE IF EXISTS {database_name}")
 
     cur.close()
     conn.close()
