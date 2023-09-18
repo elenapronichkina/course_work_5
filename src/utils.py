@@ -7,8 +7,8 @@ password = os.getenv('PASSWORD_PG')
 
 def load_employers():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
-    con = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
-    cur = con.cursor()
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+    cur = conn.cursor()
 
     for _id in employers_ids:
         data = requests.get(f'https://api.hh.ru/employers/{_id}').json()
@@ -24,14 +24,14 @@ def load_employers():
         ))
 
     cur.close()
-    con.commit()
-    con.close()
+    conn.commit()
+    conn.close()
 
 
 def load_vacancies():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
 
-    con = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
     cur = con.cursor()
 
     for _id in employers_ids:
@@ -51,16 +51,16 @@ def load_vacancies():
             ))
 
     cur.close()
-    con.commit()
-    con.close()
+    conn.commit()
+    conn.close()
 
 
 def create_tables():
     """Создание таблиц для сохранения данных о работодателях и вакансиях"""
 
-    con = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
 
-    with con.cursor() as cur:
+    with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE employers (
                 employer_id INT  PRIMARY KEY,
@@ -71,7 +71,7 @@ def create_tables():
             );
         """)
 
-    with con.cursor() as cur:
+    with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE vacancies (
                 vacancy_id INT PRIMARY KEY,
@@ -83,34 +83,34 @@ def create_tables():
             );
         """)
 
-    con.commit()
-    con.close()
+    conn.commit()
+    conn.close()
 
 
 def create_database(database_name):
-    """Создание базы данных для сохранения данных о каналах и видео."""
-    con = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
-    cur = con.cursor()
+    """Создание базы данных"""
+    conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
+    cur = conn.cursor()
 
-    con.autocommit = True
+    conn.autocommit = True
 
     cur.execute(f"CREATE DATABASE {database_name}")
 
     cur.close()
-    con.close()
+    conn.close()
 
 
 def drop_database(database_name):
-    """Создание базы данных для сохранения данных о каналах и видео."""
+    """Удаление базы данных"""
     try:
-        con = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
-        cur = con.cursor()
+        conn = psycopg2.connect(dbname='postgres', user='postgres', password=password, host='localhost', port=5432)
+        cur = conn.cursor()
 
-        con.autocommit = True
+        conn.autocommit = True
 
         cur.execute(f"DROP DATABASE IF EXISTS {database_name}")
 
         cur.close()
-        con.close()
+        conn.close()
     except psycopg2.Error:
         print("error")
