@@ -4,7 +4,6 @@ import requests
 
 password = os.getenv('PASSWORD_PG')
 
-
 def load_employers():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
     conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
@@ -32,7 +31,7 @@ def load_vacancies():
     employers_ids = [1122462, 9498120, 3776, 3529, 78638]
 
     conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
-    cur = con.cursor()
+    cur = conn.cursor()
 
     for _id in employers_ids:
 
