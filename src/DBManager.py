@@ -2,16 +2,18 @@ import os
 import psycopg2
 
 password = os.getenv('PASSWORD_PG')
-conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+
 
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
 
     def __init__(self):
-        self.conn = conn
+        self.conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost',
+                                     port=5432)
 
     def get_companies_and_vacancies_count(self):
         """получает список всех компаний и количество вакансий у каждой компании."""
+        conn = self.conn
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT COUNT(vacancy_id),employer_name
@@ -26,6 +28,7 @@ class DBManager:
     def get_all_vacancies(self):
         """получает список всех вакансий с указанием названия компании,
         названия вакансии и зарплаты и ссылки на вакансию."""
+        conn = self.conn
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT employers.employer_name, vacancy_name, salary_from, salary_to, vacancy_url 
@@ -39,6 +42,7 @@ class DBManager:
 
     def get_avg_salary(self):
         """получает среднюю зарплату по вакансиям."""
+        conn = self.conn
         with conn.cursor() as cur:
             cur.execute("""
                  SELECT vacancy_name, AVG(salary_from+salary_to)
@@ -53,6 +57,7 @@ class DBManager:
     def get_vacancies_with_higher_salary(self):
         """получает список всех вакансий, у которых
             зарплата выше средней по всем вакансиям."""
+        conn = self.conn
         with conn.cursor() as cur:
             cur.execute("""
                     SELECT *
@@ -67,6 +72,7 @@ class DBManager:
     def get_vacancies_with_keyword(self):
         """получает список всех вакансий, в названии которых
             содержатся переданные в метод слова"""
+        conn = self.conn
         user_word = str(input())
         word = user_word.casefold()
         with conn.cursor() as cur:
