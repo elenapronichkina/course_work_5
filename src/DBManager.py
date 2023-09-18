@@ -1,10 +1,12 @@
 import os
 import psycopg2
 
+password = os.getenv('PASSWORD_PG')
+conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+
 class DBManager:
     """класс для работы с БД: подключается к БД PostgreSQL"""
-    password = os.getenv('PASSWORD_PG')
-    conn = psycopg2.connect(dbname='database_hh', user='postgres', password=password, host='localhost', port=5432)
+
     def __init__(self):
         self.conn = conn
 
